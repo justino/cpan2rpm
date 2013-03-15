@@ -1264,7 +1264,7 @@ sub untar($) {
 
     my $cmd = $zip
         ? "unzip -l $_ | grep -P -o '\\S+/\$' |tail -1"
-        : "tar -t${z}vf $_ |head -1"
+        : "tar -t${z}vf $_ | sort | head -1"
         ;
 
     chomp($_ = qx/$cmd/);
