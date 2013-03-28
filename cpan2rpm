@@ -1264,16 +1264,16 @@ sub untar($) {
 
     my $cmd = $zip
         ? "unzip -l $_ | grep -P -o '\\S+/\$' |tail -1"
-        : "tar -t${z}vf $_ | sort | head -1"
-        ;
+        : "tar -t${z}vf $_ | awk '{ print \$6 }' | sort | head -1"
+    ;
 
     chomp($_ = qx/$cmd/);
-    $_ = (split)[5] unless $zip;
+    s|/*$||; # path shouldn't end in / or tardir gets wiped
+    s|\./||; # paths in tarballs shouldn't be relative
+
     $dst .= "/$1" if m|^(\S+)/?|;
-    $dst =~ s|/*$||;    # path shouldn't end in / or tardir gets wiped
-    $dst =~ s|\./||;    # paths in tarballs shouldn't be relative
     return $dst;
-    }
+}
 
 # --- file handling functions -------------------------------------------------
 
