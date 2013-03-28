@@ -485,6 +485,8 @@ sub get_meta {
         
         my $use = "use $_";
         $use .= " $deps->{$_}" if $deps->{$_};
+        ## Handle perl version dep (not a use statement)
+        $use = "require $deps->{$_}" if lc $_ eq 'perl';
 
         local $^W = 0;
         $@ = ""; eval $use;
