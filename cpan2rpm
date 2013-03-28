@@ -123,6 +123,7 @@ sub init {
         "prologue=s@"     => "inserts text at beginning of section",
         "epilogue=s@"     => "inserts text at end of section",
         # -- build options
+        "no-spec"         => "suppresses generation of SPEC",
         "spec-only"       => "only generates spec file",
         "spec=s"          => "specifies the name of a spec file",
         "make-maker=s"    => "arguments for makefile creation",
@@ -751,6 +752,9 @@ EOF
 
 sub mk_spec {
     my $info = shift || $_; local $_;
+    
+    ## Skip, already have a SPEC
+    print "Skipping SPEC file\n" and return if $info->{"no-spec"};
 
     print "Generating spec file\n";
 
@@ -1926,6 +1930,10 @@ I<exempli gratia>
 The following options control the package making process.
 
 =over
+
+=item B<--no-spec>
+
+This option suppresses the generation of the SPEC file. This is mainly used is you already have a SPEC file you'd like to use
 
 =item B<--spec-only>
 
